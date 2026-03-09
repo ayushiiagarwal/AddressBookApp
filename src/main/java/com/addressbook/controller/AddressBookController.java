@@ -12,8 +12,8 @@ import com.addressbook.model.Contact;
 public class AddressBookController {
     @GetMapping("/contacts")
     public List<Contact> getAllContacts(){
-        Contact c1 = new Contact(01, "Olive", "9123658974");
-        Contact c2 = new Contact(02, "Adam", "9854721451");
+        Contact c1 = new Contact("Adam", "Connor", "NY-101", "New York City", "New York", "4555184", "9587463256");
+        Contact c2 = new Contact("Olive", "Smith", "PR-154", "Paris", "France", "5544475", "7458963214");
 
         return Arrays.asList(c1, c2);
     }
