@@ -9,9 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.addressbook</groupId>
-	<artifactId>addressbook-app</artifactId>
+	<artifactId>addressbook</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>addressbook-app</name>
 	<description>Address Book App</description>
 	<url/>
 	<licenses>
