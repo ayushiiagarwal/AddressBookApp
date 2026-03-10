@@ -36,4 +36,9 @@ public class Contact {
 
     public String getPhone(){ return phone; }
     public void setPhone(String phone){ this.phone = phone; }
+
+    public String toString(){
+        return firstName + " " + lastName + "\n" + address + "\n" + city + 
+        ", " + state + ", " + zip + phone;
+    }
 }
