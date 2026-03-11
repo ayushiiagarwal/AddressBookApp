@@ -11,6 +11,7 @@ public class AddressBookController {
 
     @PostMapping("/add")
     public String createContact(@RequestBody Contact contact){
+        contacts.add(contact);
         return "Contact added successfully.";
     }
 
@@ -39,12 +40,10 @@ public class AddressBookController {
 
     @DeleteMapping("/delete/{firstName}")
     public String deleteContact(@PathVariable String firstName){
-        for(Contact c : contacts){
-            if(c.getFirstName().equalsIgnoreCase(firstName)){
-                contacts.remove(c);
-                return "Contact deleted successfully";
-            }
-        }
+        boolean removed = contacts.removeIf(c -> c.getFirstName().equalsIgnoreCase(firstName));
+
+        if(removed)
+            return "Contact deleted successfully";
 
         return "Contact not found";
     }
