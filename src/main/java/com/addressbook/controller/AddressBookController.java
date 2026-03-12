@@ -11,6 +11,7 @@ public class AddressBookController {
 
     @PostMapping("/add")
     public String createContact(@RequestBody Contact contact){
+        contacts.add(contact);
         return "Contact added successfully.";
     }
 
