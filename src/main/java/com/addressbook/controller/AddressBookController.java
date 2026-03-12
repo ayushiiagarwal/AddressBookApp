@@ -3,6 +3,9 @@ package com.addressbook.controller;
 import com.addressbook.model.Contact;
 import java.util.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/addressbook")
@@ -46,5 +49,11 @@ public class AddressBookController {
             return "Contact deleted successfully";
 
         return "Contact not found";
+    }
+
+    @PostMapping("/addMultiple")
+    public String addMultipleContacts(@RequestBody List<Contact> newContacts) {
+        contacts.addAll(newContacts);
+        return "Added multiple contacts.";
     }
 }
