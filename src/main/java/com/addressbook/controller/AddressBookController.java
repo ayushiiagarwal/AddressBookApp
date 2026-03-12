@@ -10,50 +10,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/addressbook")
 public class AddressBookController {
-    private List<Contact> contacts = new ArrayList<>();
+    private Map<String, List<Contact>> addressBooks = new HashMap<>();
 
-    @PostMapping("/add")
-    public String createContact(@RequestBody Contact contact){
-        contacts.add(contact);
-        return "Contact added successfully.";
+    @PostMapping("/add/{bookName}")
+    public String addContact(@PathVariable String bookName, @RequestBody Contact contact){
+        addressBooks.computeIfAbsent(bookName, a -> new ArrayList<>()).add(contact);
+        return "Contact added to " + bookName + " address book successfully.";
     }
 
-    @GetMapping("/allContacts")
-    public List<Contact> getAllContacts() {
-        return contacts;
+    @GetMapping("/{bookName}")
+    public List<Contact> getAllContacts(@PathVariable String bookName) {
+        return addressBooks.getOrDefault(bookName, new ArrayList<>());
     }
 
-    @PutMapping("/edit/{firstName}")
-    public String editContact(@PathVariable String firstName, @RequestBody Contact contact) {
-        for(Contact c : contacts){
-            if(c.getFirstName().equalsIgnoreCase(firstName)){
-                c.setLastName(contact.getLastName());
-                c.setAddress(contact.getAddress());
-                c.setCity(contact.getCity());
-                c.setState(contact.getState());
-                c.setZip(contact.getZip());
-                c.setPhone(contact.getPhone());
-
-                return "Contact edited successfully!";
-            }
-        }
-
-        return "Contact not found!";
-    }
-
-    @DeleteMapping("/delete/{firstName}")
-    public String deleteContact(@PathVariable String firstName){
-        boolean removed = contacts.removeIf(c -> c.getFirstName().equalsIgnoreCase(firstName));
-
-        if(removed)
-            return "Contact deleted successfully";
-
-        return "Contact not found";
-    }
-
-    @PostMapping("/addMultiple")
-    public String addMultipleContacts(@RequestBody List<Contact> newContacts) {
-        contacts.addAll(newContacts);
-        return "Added multiple contacts.";
+    @GetMapping("/all")
+    public Map<String, List<Contact>> getAllBooks(){
+        return addressBooks;
     }
 }
