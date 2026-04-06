@@ -3,9 +3,6 @@ package com.addressbook.controller;
 import com.addressbook.model.Contact;
 import java.util.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("/addressbook")
@@ -14,7 +11,13 @@ public class AddressBookController {
 
     @PostMapping("/add/{bookName}")
     public String addContact(@PathVariable String bookName, @RequestBody Contact contact){
-        addressBooks.computeIfAbsent(bookName, a -> new ArrayList<>()).add(contact);
+        List<Contact> contacts = addressBooks.computeIfAbsent(bookName, a -> new ArrayList<>());
+
+        boolean isDuplicate = contacts.stream().anyMatch(existing -> existing.equals(contact));
+
+        if(isDuplicate) return "Contact already exists in " + bookName;
+
+        contacts.add(contact);
         return "Contact added to " + bookName + " address book successfully.";
     }
 
