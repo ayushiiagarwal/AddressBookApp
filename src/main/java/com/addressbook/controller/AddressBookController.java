@@ -26,6 +26,15 @@ public class AddressBookController {
         return addressBooks.getOrDefault(bookName, new ArrayList<>());
     }
 
+    @GetMapping("/search/{cityState}")
+    public List<Contact> searchByCityState(@PathVariable String cityState){
+        return addressBooks.values().stream()
+                .flatMap(List::stream)
+                .filter(contact ->
+                        contact.getCity().equalsIgnoreCase(cityState) ||
+                        contact.getState().equalsIgnoreCase(cityState)).toList();
+    }
+
     @GetMapping("/all")
     public Map<String, List<Contact>> getAllBooks(){
         return addressBooks;
