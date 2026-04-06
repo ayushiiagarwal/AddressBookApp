@@ -48,6 +48,19 @@ public class AddressBookController {
                 }));
     }
 
+    @GetMapping("/count/{type}")
+    public Map<String, Long> count(@PathVariable String type){
+        return addressBooks.values().stream()
+                .flatMap(List::stream)
+                .collect(Collectors.groupingBy(
+                        contact -> {
+                            if(type.equalsIgnoreCase("city")) return contact.getCity();
+                            else if(type.equalsIgnoreCase("state")) return contact.getState();
+                            else throw new IllegalArgumentException("Invalid type");
+                        },
+                        Collectors.counting()));
+    }
+
     @GetMapping("/all")
     public Map<String, List<Contact>> getAllBooks(){
         return addressBooks;
