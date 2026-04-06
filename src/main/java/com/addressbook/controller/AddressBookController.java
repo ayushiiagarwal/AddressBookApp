@@ -2,6 +2,8 @@ package com.addressbook.controller;
 
 import com.addressbook.model.Contact;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,6 +35,17 @@ public class AddressBookController {
                 .filter(contact ->
                         contact.getCity().equalsIgnoreCase(cityState) ||
                         contact.getState().equalsIgnoreCase(cityState)).toList();
+    }
+
+    @GetMapping("/view/{type}")
+    public Map<String, List<Contact>> view(@PathVariable String type){
+        return addressBooks.values().stream()
+                .flatMap(List::stream)
+                .collect(Collectors.groupingBy(contact -> {
+                    if(type.equalsIgnoreCase("city")) return contact.getCity();
+                    else if(type.equalsIgnoreCase("state")) return contact.getState();
+                    else throw new IllegalArgumentException("Invalid type");
+                }));
     }
 
     @GetMapping("/all")
